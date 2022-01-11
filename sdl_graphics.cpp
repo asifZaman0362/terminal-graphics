@@ -38,12 +38,12 @@ namespace ziffman::borderline_graphics {
         texture = SDL_CreateTexture(renderer, 
             SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STATIC, 
             width, height);
+        pixels = new uint32_t[width * height];
+        font = TTF_OpenFont("Sans.ttf", 12);
         inputTextSurface = TTF_RenderText_Solid(font, "", { 200, 200, 200 });
         outputTextSurface = TTF_RenderText_Solid(font, "", { 200, 200, 200 });
         inputTextTexture = SDL_CreateTextureFromSurface(renderer, inputTextSurface);
         outputTextTexture = SDL_CreateTextureFromSurface(renderer, outputTextSurface);
-        pixels = new uint32_t[width * height];
-        font = TTF_OpenFont("Sans.ttf", 12);
         initialised = true;
         running = true;
     }
@@ -205,14 +205,15 @@ namespace ziffman::borderline_graphics {
         char c = format[i++];
         while (c != '\0') {
             char n = format[i++];
-            if (c == '%') {
+            if (c == '%' && n != '\0') {
                 switch(n) {
                     case 'd':
                     case 'i': {
                         std::thread scan_input_thread = std::thread(wait_for_input);
                         scan_input_thread.join();
-                        int *i = va_arg(arglist, int*);
-                        *i = parse_input<int>();
+                        int *_i = va_arg(arglist, int*);
+                        *_i = parse_input<int>();
+                        c = format[i++];
                         break;
                     }
                     case 'f': {
@@ -220,6 +221,7 @@ namespace ziffman::borderline_graphics {
                         scan_input_thread.join();
                         float *f = va_arg(arglist, float*);
                         *f = parse_input<float>();
+                        c = format[i++];
                         break;
                     }
                     case 's': {
@@ -227,24 +229,27 @@ namespace ziffman::borderline_graphics {
                         scan_input_thread.join();
                         char *s = va_arg(arglist, char*);
                         std::string str = parse_input<std::string>();
-                        for (int i = 0; i < str.length(); i++) {
-                            s[i] = str[i];
-                        }
+                        int j = 0;
+                        for (int j = 0; j <= str.length(); j++) {
+                            s[j] = str[j];
+                        } s[j] = '\0';
+                        c = format[i++];
                         break;
                     }
                     case 'c': {
                         std::thread scan_input_thread = std::thread(wait_for_input);
                         scan_input_thread.join();
-                        char *c = va_arg(arglist, char*);
-                        *c = parse_input<char>();
+                        char *_c = va_arg(arglist, char*);
+                        *_c = parse_input<char>();
+                        c = format[i++];
                         break;
                     }
-                    case '\0':
-                        break;
                     default:
                         std::cout << "Invalid format found while scanning for inputs!\n";
                         break;
                 }
+            } else if (n == '\0') {
+                std::cout << "Invalid format found while scanning for inputs!\n";
             }
         }
         va_end(arglist);
@@ -254,7 +259,9 @@ namespace ziffman::borderline_graphics {
 
 int main() {
     std::thread child = std::thread(ziffman::borderline_graphics::main);
+    child.detach();
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(1000ms);
     ziffman::borderline_graphics::main_loop();
-    child.join();
     return 0;
 }
