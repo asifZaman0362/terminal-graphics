@@ -27,25 +27,6 @@ namespace ziffman::borderline_graphics {
 
     extern int main();
 
-    // Global variables
-    TTF_Font *font;
-    SDL_Window *window;
-    SDL_Texture *texture;
-    SDL_Texture *inputTextTexture;
-    SDL_Texture *outputTextTexture;
-    SDL_Surface *outputTextSurface;
-    SDL_Surface *inputTextSurface;
-    SDL_Renderer *renderer;
-
-    uint32_t *pixels;
-    uint16_t width, height;
-
-    std::stringstream outstream;
-    std::stack<char> instream;
-
-    bool initialised = false;
-    bool running = false;
-
     void initgraph(int *graphics_driver, int *graphics_mode, const char* path);
 
     char getch();
@@ -64,11 +45,6 @@ namespace ziffman::borderline_graphics {
 
 }
 
-int main() {
-    std::thread child = std::thread(ziffman::borderline_graphics::main);
-    ziffman::borderline_graphics::main_loop();
-    child.join();
-    return 0;
-}
+int main();
 
 #endif
