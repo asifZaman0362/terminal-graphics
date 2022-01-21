@@ -1,10 +1,14 @@
-#include "sdl_graphics.hpp"
+#include "graphics.h"
 
-int ziffman::borderline_graphics::main() {
+int graphics::main() {
     int gd = DETECT, gm = 0;
     initgraph(&gd, &gm, "Default");
     int x;
     char str[100];
-    scanf("%d%s");
+    while (true) {
+        scanf("%s", str);
+        printf("%s", str);
+    }
+    getch();
     return 0;
 }

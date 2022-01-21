@@ -1,4 +1,4 @@
 project(Graphics)
 
-add_executable(Graphics sdl_graphics.cpp test.cpp)
-target_link_libraries(Graphics SDL2 SDL2_ttf pthread)
+add_executable(Graphics graphics.h test.cpp)
+target_link_libraries(Graphics sfml-system sfml-window sfml-graphics)

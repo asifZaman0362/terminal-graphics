@@ -38,9 +38,10 @@ namespace graphics {
 
     extern int main();
 
-    void quit_program() {
+    void quit_program(int code = 0) {
         window.close();
         delete[] pixels;
+        exit(code);
     }
 
     char scancode_to_ascii(int code) {
@@ -61,30 +62,35 @@ namespace graphics {
                     if (event.key.code == sf::Keyboard::Return) {
                         outstream << instream.str();
                         outstream << "\n";
-                        instream.str(std::string());
-                        inputText.setString(instream.str());
+                        //instream.str(std::string());
+                        //inputText.setString(instream.str());
                         outputText.setString(outstream.str());
-                        inputText.setPosition(0, inputText.getPosition().y + inputText.getCharacterSize() * inputText.getLineSpacing());
+                        //inputText.setPosition(0, inputText.getPosition().y + inputText.getCharacterSize() * inputText.getLineSpacing());
                         return;
                     }
                     else if (event.key.code == sf::Keyboard::BackSpace) {
-                        if (instream.str().length() <= 0) break;
+                        if (instream.str().length() <= 0) continue;
                         std::string str = instream.str();
                         str.pop_back();
                         instream.str(str);
                         instream.seekp(str.length());
-                     }
-                    if (event.key.code == sf::Keyboard::LShift || event.key.code == sf::Keyboard::RShift) shift = true;
+                    }
+                    else if (event.key.code == sf::Keyboard::LShift || event.key.code == sf::Keyboard::RShift) shift = true;
                     else instream << scancode_to_ascii(event.key.code);
-                    inputText.setString(instream.str());
-                    outputText.setString(outstream.str());
+                    //inputText.setString(instream.str());
+                    outputText.setString(outstream.str() + instream.str());
                     window.clear();
-                    sf::RectangleShape rect(sf::Vector2f(inputText.getCharacterSize() / 2, inputText.getCharacterSize() / 5));
-                    float x = inputText.getGlobalBounds().width;
-                    float y = inputText.getPosition().y + inputText.getCharacterSize() + 2;
+                    sf::RectangleShape rect(sf::Vector2f(outputText.getCharacterSize() / 2, outputText.getCharacterSize() / 5));
+                    float x = outputText.findCharacterPos(outputText.getString().getSize() - 1).x + outputText.getCharacterSize() / 2;
+                    float y = outputText.getPosition().y + outputText.getGlobalBounds().height + outputText.getCharacterSize() / 2;
+                    if (x >= window.getSize().x) {
+                        // TODO: Wrap line
+                    } if (y >= window.getSize().y) {
+                        // TODO: Move text up
+                    }
                     rect.setPosition(sf::Vector2f(x, y));
                     window.draw(sprite);
-                    window.draw(inputText);
+                    //window.draw(inputText);
                     window.draw(outputText);
                     window.draw(rect);
                     window.display();
@@ -118,11 +124,11 @@ namespace graphics {
     }
 
     void parse_string(char* s) {
-        while (!instream.str().length()) getinput();
-        const char* buff = instream.str().c_str();
+        auto str = instream.str();
+        while (!str.length()) getinput();
         int i;
         for (i = 0; i < instream.str().length(); i++) {
-            s[i] = buff[i];
+            s[i] = str[i];
         }
         s[i] = '\0';
     }
@@ -141,7 +147,7 @@ namespace graphics {
         }
     }
 
-    void initgraph(int &gd, int &gm, const char* title) {
+    void initgraph(int *gd, int *gm, const char* title) {
         width = 640;
         height = 480;
         window.create(sf::VideoMode(width, height, 32U), title);
@@ -151,9 +157,9 @@ namespace graphics {
         texture.update(pixels);
         sprite.setTexture(texture);
         font.loadFromFile("Sans.ttf");
-        inputText.setFont(font);
-        inputText.setCharacterSize(14);
-        inputText.setPosition(0, 14 * inputText.getLineSpacing());
+        //inputText.setFont(font);
+        //inputText.setCharacterSize(14);
+        //inputText.setPosition(0, 0);
         outputText.setFont(font);
         outputText.setCharacterSize(14);
         outputText.setPosition(0, 0);
@@ -204,11 +210,13 @@ namespace graphics {
 
     inline void clrscr() {
         outstream.clear();
-        inputText.setString(outstream.str());
+        //inputText.setString(outstream.str());
         reset_pixels();
+        outputText.setPosition(0, 0);
+        outputText.setString(std::string());
         texture.update(pixels);
         window.clear();
-        window.draw(inputText);
+        //window.draw(inputText);
         window.display();
     }
 
