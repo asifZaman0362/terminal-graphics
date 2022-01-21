@@ -1,6 +1,8 @@
 #include "graphics.h"
 
-int graphics::main() {
+namespace graphics {
+
+int main() {
     int gd = DETECT, gm = 0;
     initgraph(&gd, &gm, "Default");
     int x;
@@ -11,4 +13,6 @@ int graphics::main() {
     }
     getch();
     return 0;
+}
+
 }

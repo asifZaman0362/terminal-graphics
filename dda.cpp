@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include <graphics.h>
 
 #define pi 3.1415926535f
 
@@ -39,10 +39,10 @@ void draw_circle(int radius, int x, int y, int segments) {
 
 int main() {
     int gd = DETECT, gm;
-    initgraph(gd, gm, "default");
+    initgraph(&gd, &gm, "default");
     //draw_line(10, 10, 100, 100);
     draw_circle(100, 320, 240, 50);
-    printf("Dello World!%d\n", 20);
+    printf("Hello World!%d\n", 20);
     int x, y;
     //scanf("%d%d", &x, &y);
     //printf("%d,%d", x, y);
