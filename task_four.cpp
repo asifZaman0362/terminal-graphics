@@ -8,7 +8,7 @@ void draw_triangle(int, int, int, int, int, int);
 
 int main () {
     int gd = DETECT, gm;
-    initgraph(&gd, &gm, "deafult"); // <-- Change to BGI Path when executing in TURBO C++
+    initgraph(&gd, &gm, "default"); // <-- Change to BGI Path when executing in TURBO C++
     draw_triangle(20, 200, 200, 20, 400, 200);
     getch();
     return 0;
