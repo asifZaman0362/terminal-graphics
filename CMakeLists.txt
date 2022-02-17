@@ -1,5 +1,6 @@
 project(Graphics)
 
 include_directories(./)
-add_executable(Graphics graphics.h dda.cpp)
+include_directories(header)
+add_executable(Graphics header/graphics.h task_nine.cpp)
 target_link_libraries(Graphics sfml-system sfml-window sfml-graphics)

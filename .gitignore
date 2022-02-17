@@ -1,4 +1,5 @@
 build/
+!build/Sans.ttf
 bin/
 .vscode/
 *.o

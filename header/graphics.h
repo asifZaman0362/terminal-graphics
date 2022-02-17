@@ -148,8 +148,8 @@ namespace graphics {
     }
 
     void initgraph(int *gd, int *gm, const char* title) {
-        width = 640;
-        height = 480;
+        width = 1366;
+        height = 768;
         window.create(sf::VideoMode(width, height, 32U), title);
         texture.create(width, height);
         pixels = new uint8_t[width * height * 4];
@@ -161,7 +161,7 @@ namespace graphics {
         //inputText.setCharacterSize(14);
         //inputText.setPosition(0, 0);
         outputText.setFont(font);
-        outputText.setCharacterSize(14);
+        outputText.setCharacterSize(32);
         outputText.setPosition(0, 0);
     }
 
