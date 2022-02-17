@@ -14,17 +14,15 @@ void circle_points(int cx, int cy, int x, int y) {
 }
 
 void draw_circle(int cx, int cy, int r) {
-    int x = r, y = 0;
-    int d = 1 - r;
+    int x = 0, y = r;
+    int d = 3 - 2 * r;
     circle_points(cx, cy, x, y);
-    while (x > y++) {
-        if (d <= 0) {
-            d += 2 * y + 1;
-        } else {
-            x--;
-            d += 2 * y - 2 * x + 1;
+    while (y >= x++) {
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
         }
-        if (x < y) break;
+        else d = d + 4 * x + 6;
         circle_points(cx, cy, x, y);
     }
 }
@@ -37,6 +35,5 @@ int main() {
     getch();
     return 0;
 }
-
 
 } // <-- Remove end-namespace when executing in TURBO C++
