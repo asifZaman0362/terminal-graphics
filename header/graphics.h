@@ -13,12 +13,12 @@ namespace graphics {
     #define DETECT 0
 
     #define WHITE sf::Color::White
-    #define RED sf::Color::Red;
-    #define GREEN sf::Color::Green;
-    #define BLUE sf::Color::Blue;
-    #define CYAN sf::Color::Cyan;
-    #define PURPLE sf::Color::Magenta;
-    #define BLACK sf::Color::Black;
+    #define RED sf::Color::Red
+    #define GREEN sf::Color::Green
+    #define BLUE sf::Color::Blue
+    #define CYAN sf::Color::Cyan
+    #define PURPLE sf::Color::Magenta
+    #define BLACK sf::Color::Black
 
     sf::RenderWindow window;
     sf::Texture texture;
