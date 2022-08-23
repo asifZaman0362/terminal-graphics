@@ -1,0 +1,5 @@
+#!/bin/bash
+g++ "$1" -o "exec" -Iheader -lsfml-window -lsfml-graphics -lsfml-system
+if [[ $? -eq 0 ]]; then
+    ./exec
+fi
